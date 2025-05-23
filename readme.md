@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ```bash
 streamlit run app.py
 ```
-if you cant run this cell above use code cell below
+⚠️ If the command above doesn't work, try:
 ```bash
 python -m streamlit run app.py
 ```
