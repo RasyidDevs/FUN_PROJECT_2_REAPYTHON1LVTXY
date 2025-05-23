@@ -1,10 +1,12 @@
 <p align="center">
   <img src="./assets/documentation/logo.png" alt="Contoh Gambar" width="300" />
 </p>
-### Demo Web 📺
-link: Coming Soon!!!
-### Demo Video 💻
-link: Coming
+
+### Demo Web 📺  
+Link: Coming Soon!!!
+
+### Demo Video 💻  
+Link: Coming
 ## Installation
 
 1. Clone this repository  
