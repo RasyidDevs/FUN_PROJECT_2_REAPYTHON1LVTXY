@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/documentation/logo.png" alt="Contoh Gambar" width="300" />
+  <img src="./assets/documentation/logo.png" alt="Contoh Gambar" width="300" />
 </p>
 
 ## Installation
