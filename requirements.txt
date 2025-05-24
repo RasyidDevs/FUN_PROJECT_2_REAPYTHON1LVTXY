@@ -6,4 +6,4 @@ streamlit==1.45.1
 streamlit_lottie==0.0.5
 youtube_transcript_api==1.0.3
 google-generativeai==0.8.5
-protobuf==6.31.0
+protobuf==4.21.5
