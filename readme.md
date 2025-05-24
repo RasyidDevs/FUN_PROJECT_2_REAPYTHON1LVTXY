@@ -2,9 +2,14 @@
   <img src="./assets/documentation/logo.png" alt="Contoh Gambar" width="300" />
 </p>
 
+### Demo Web 📺  
+Link: Coming Soon!!!
+
+### Demo Video 💻  
+Link: Coming
 ## Installation
 
-1.Clone this repository  
+1. Clone this repository  
 ```bash
 git clone https://github.com/RasyidDevs/FUN_PROJECT_2_REAPYTHON1LVTXY.git
 ```
@@ -24,3 +29,6 @@ streamlit run app.py
 ```bash
 python -m streamlit run app.py
 ```
+# 🤝 Contributing
+If you want to contribute to this project, please open an issue, submit a pull request or contact me at
+rasyidbomantoro@gmail.com
