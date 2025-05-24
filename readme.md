@@ -4,7 +4,7 @@
 
 
 ### Demo Video 💻  
-Link: Coming
+Link: [Youtube video](https://youtu.be/R5wiGC29Hng?si=eI7PgUgl8GQ989CP)
 ## Installation
 
 1. Clone this repository  
