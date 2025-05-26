@@ -19,11 +19,11 @@ cd FUN_PROJECT_2_REAPYTHON1LVTXY
 ```bash
 pip install -r requirements.txt
 ```
-4. Create  api key on this link  [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey) then change code on line 15
+4. Create  api key on this link  [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey) then change code on app.py line 15
 ```bash
 genai.configure(api_key="YOUR_GOOGLE_API_KEY") 
 ```
-5. Create openrouter api key on this link [https://openrouter.ai/keys](https://openrouter.ai/keys) then change code on line 16
+5. Create openrouter api key on this link [https://openrouter.ai/keys](https://openrouter.ai/keys) then change code on app.py line 16
 ```bash
 OPENROUTER_API_KEY = "YOUR_OPENROUTER_API_KEY"  
 ```
