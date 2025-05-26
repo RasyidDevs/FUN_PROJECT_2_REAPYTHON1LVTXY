@@ -12,8 +12,8 @@ import os
 import asyncio
 from langdetect import detect
 
-genai.configure(api_key="AIzaSyCCo5_JMTw1Jf1Id6ZJr59A2Tnek31uvI0")
-OPENROUTER_API_KEY = "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"
+genai.configure(api_key="YOUR_GENAI_API_KEY")  # Replace with your actual API key
+OPENROUTER_API_KEY = "YOUR_OPENROUTER_API_KEY"  # Replace with your actual OpenRouter API key
 
 MODEL = "deepseek/deepseek-chat-v3-0324"
 HEADERS = {
