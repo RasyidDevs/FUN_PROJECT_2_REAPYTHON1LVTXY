@@ -2,11 +2,9 @@
   <img src="./assets/documentation/logo.png" alt="Contoh Gambar" width="300" />
 </p>
 
-### Demo Web 📺  
-Link: Coming Soon!!!
 
 ### Demo Video 💻  
-Link: Coming
+Link: [Youtube video](https://youtu.be/R5wiGC29Hng?si=eI7PgUgl8GQ989CP)
 ## Installation
 
 1. Clone this repository  
@@ -21,7 +19,15 @@ cd FUN_PROJECT_2_REAPYTHON1LVTXY
 ```bash
 pip install -r requirements.txt
 ```
-4. run streamlit
+4. Create  api key on this link  [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey) then change code on line 15
+```bash
+genai.configure(api_key="YOUR_GOOGLE_API_KEY") 
+```
+5. Create openrouter api key on this link [https://openrouter.ai/keys](https://openrouter.ai/keys) then change code on line 16
+```bash
+OPENROUTER_API_KEY = "YOUR_OPENROUTER_API_KEY"  
+```
+6. run streamlit
 ```bash
 streamlit run app.py
 ```
