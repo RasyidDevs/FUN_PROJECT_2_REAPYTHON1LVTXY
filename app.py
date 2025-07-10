@@ -88,6 +88,7 @@ def extract_transcript_details(video_id):
             return result["text"]
 
     except Exception as whisper_error:
+        st.error("❌ Gagal mengambil transkrip dengan Whisper.")
         print(f"❌ Gagal mengambil transkrip dengan Whisper: {str(whisper_error)}")
         return None
 
