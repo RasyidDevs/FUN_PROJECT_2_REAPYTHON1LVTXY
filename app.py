@@ -8,6 +8,9 @@ import tempfile
 import whisper
 import subprocess
 
+import yt_dlp
+import imageio_ffmpeg 
+
 import google.generativeai as genai
 import edge_tts
 import tempfile
@@ -67,19 +70,23 @@ def get_video_id(youtube_url):
     return None
 
 def extract_transcript_details(video_id): 
-    try:    
+    try:
         with tempfile.TemporaryDirectory() as tmpdir:
             audio_path = os.path.join(tmpdir, f"{video_id}.mp3")
-            ytdlp_cmd = [
-                "yt-dlp",
-                "-f", "bestaudio",
-                "--extract-audio",
-                "--audio-format", "mp3",
-                f"https://www.youtube.com/watch?v={video_id}",
-                "-o", audio_path
-            ]
-            print(f"[INFO] Menjalankan yt-dlp: {' '.join(ytdlp_cmd)}")
-            subprocess.run(ytdlp_cmd, check=True)
+            # Pakai yt_dlp dari Python
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'outtmpl': audio_path,
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }],
+                'ffmpeg_location': imageio_ffmpeg.get_ffmpeg_exe(),
+                'quiet': True
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
 
             print("[INFO] Memulai transkripsi Whisper...")
             model = whisper.load_model("base") 
