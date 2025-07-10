@@ -1,6 +1,6 @@
 edge_tts==7.0.2
 langdetect==1.0.9
-openai_whisper==20250625
+openai-whisper==20250625
 protobuf>=3.20.2, <4.21.0
 Requests==2.32.4
 streamlit==1.45.1
