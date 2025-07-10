@@ -3,7 +3,11 @@ import requests
 import json
 from streamlit_lottie import st_lottie
 import re
-from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
+import os
+import tempfile
+import whisper
+import subprocess
+
 import google.generativeai as genai
 import edge_tts
 import tempfile
@@ -12,8 +16,8 @@ import os
 import asyncio
 from langdetect import detect
 
-genai.configure(api_key="YOUR_GENAI_API_KEY")  # Replace with your actual API key
-OPENROUTER_API_KEY = "YOUR_OPENROUTER_API_KEY"  # Replace with your actual OpenRouter API key
+genai.configure(api_key=st.secrets["GENAI_API_KEY"])
+OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"] 
 
 MODEL = "deepseek/deepseek-chat-v3-0324"
 HEADERS = {
@@ -33,6 +37,8 @@ succinct summary of the transcript text extracted from a YouTube video.
 3. Focus on clarity, conciseness, and relevance in your summary. Ensure that your summary captures the essence of the video content.
 4. Aim for a well-structured summary that is easy to follow and provides value to the reader.
 5. Language you are using should match the language of the transcript text.
+6. Do not include any personal opinions or interpretations; stick to the facts presented in the transcript.
+7. Don't say anything besides the summary, do not say "Here is the summary" or "Summary of the video is" or anything like that.
 **Summary:**"""
 
 
@@ -60,23 +66,30 @@ def get_video_id(youtube_url):
             return match.group(1)
     return None
 
-def extract_transcript_details(video_id):
-    try:
-        ytt_api = YouTubeTranscriptApi()
-        transcript_list = ytt_api.list(video_id)
-        languages_list = list(set([lang.language_code for lang in transcript_list]))
-        fetched_transcript = ytt_api.fetch(video_id=video_id, languages=languages_list)
-        transcript_text = " ".join(snippet.text for snippet in fetched_transcript.snippets).strip()
-        return transcript_text
-    except TranscriptsDisabled:
-        st.error("Transkrip video ini dinonaktifkan oleh pemilik video.")
-    except NoTranscriptFound:
-        st.error("Tidak ditemukan transkrip untuk video ini.")
-    except VideoUnavailable:
-        st.error("Video tidak tersedia.")
-    except Exception as e:
-        st.error(f"Terjadi kesalahan: {str(e)}")
+def extract_transcript_details(video_id): 
+    try:    
+        with tempfile.TemporaryDirectory() as tmpdir:
+            audio_path = os.path.join(tmpdir, f"{video_id}.mp3")
+            ytdlp_cmd = [
+                "yt-dlp",
+                "-f", "bestaudio",
+                "--extract-audio",
+                "--audio-format", "mp3",
+                f"https://www.youtube.com/watch?v={video_id}",
+                "-o", audio_path
+            ]
+            print(f"[INFO] Menjalankan yt-dlp: {' '.join(ytdlp_cmd)}")
+            subprocess.run(ytdlp_cmd, check=True)
 
+            print("[INFO] Memulai transkripsi Whisper...")
+            model = whisper.load_model("base") 
+            result = model.transcribe(audio_path, fp16=False)
+            print("[INFO] Transkripsi selesai.")
+            return result["text"]
+
+    except Exception as whisper_error:
+        print(f"❌ Gagal mengambil transkrip dengan Whisper: {str(whisper_error)}")
+        return None
 
 def generate_gemini_summary(transcript_text):
     model = genai.GenerativeModel("gemini-2.0-flash")
@@ -147,11 +160,14 @@ if llm_type == "Youtube Summarizer":
         if not video_id:
             st.error("❌ URL tidak valid. Silakan masukkan URL YouTube yang valid.")
             st.stop()
-
+        print(f"Video ID: {video_id}")
         with st.spinner("Mengambil detail video..."):
-                transcript_snippets = extract_transcript_details(video_id)   
-                st.image("https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg", caption="Video Thumbnail", use_container_width=True)
-                summary = generate_gemini_summary(transcript_snippets)
+                transcript_snippets = extract_transcript_details(video_id)
+        if not transcript_snippets:
+            st.stop()
+        print(f"Transcript Snippets: {transcript_snippets[:100]}...")  # Print first 100 characters for debugging
+        st.image("https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg", caption="Video Thumbnail", use_container_width=True)
+        summary = generate_gemini_summary(transcript_snippets)
         if voice_response:
             detected_lang = detect(summary)
             generate_voice(summary, voice=language_voice_map.get(detected_lang, "en-US-AriaNeural"))            
