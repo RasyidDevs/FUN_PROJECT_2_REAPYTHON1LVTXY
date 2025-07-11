@@ -93,7 +93,7 @@ def extract_transcript_details(video_id):
         return None
 
 def generate_gemini_summary(transcript_text):
-    model =   genai.GenerativeModel("models/gemini-pro")
+    model =   genai.GenerativeModel("gemini-pro")
     response = model.generate_content(f"{base_prompt}\n\n{transcript_text}")
     return response.text
 #END FUNGSI UNTUK SUMMARIZE YOUTUBE VIDEO
@@ -166,7 +166,6 @@ if llm_type == "Youtube Summarizer":
                 transcript_snippets = extract_transcript_details(video_id)
         if not transcript_snippets:
             st.stop()
-        print(f"Transcript Snippets: {transcript_snippets[:100]}...")  # Print first 100 characters for debugging
         st.image("https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg", caption="Video Thumbnail", use_container_width=True)
         summary = generate_gemini_summary(transcript_snippets)
         if voice_response:
