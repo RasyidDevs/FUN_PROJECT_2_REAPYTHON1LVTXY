@@ -93,7 +93,7 @@ def extract_transcript_details(video_id):
         return None
 
 def generate_gemini_summary(transcript_text):
-    model =  genai.GenerativeModel("models/gemini-1.5-pro")
+    model =   genai.GenerativeModel("models/gemini-pro")
     response = model.generate_content(f"{base_prompt}\n\n{transcript_text}")
     return response.text
 #END FUNGSI UNTUK SUMMARIZE YOUTUBE VIDEO
